@@ -4,7 +4,7 @@ These tests install Overleaf Pro the same way a user would (with the
 [toolkit](https://github.com/ayaka-notes/toolkit)), then click through it in a
 browser with Cypress.
 
-CI runs them daily against the latest ops image, one suite per runner
+CI runs them daily against the latest ops image, one group of suites per runner
 (`.github/workflows/test_ops_image.yml`). It can also be started by hand with
 another ops tag.
 
@@ -146,7 +146,7 @@ One folder per module in `toolkit/suites/`, named and nested like
 - `instance-features/` – `/system/features` and the UI that hides itself
   with it: AI assistant, GitHub Sync, Zotero and Mendeley, all off on the
   default instance and all on in the `enabled/` variant, with git-bridge,
-  which GitHub Sync needs.
+  which GitHub Sync needs; there also what an admin turned off for one user.
 - `admin-tools/` – the admin panel, `/admin/user` and `/admin/project`:
   who may open it; the user list (search by name, email and id, every Status, Login and Role
   filter with its counts, sorting, pages and page sizes, the deleted-match
@@ -216,4 +216,6 @@ Things that need email (activation mails, password reset) are not tested.
 3. The tests must not rely on other suites, each one runs on its own fresh
    instance. Create users with `ensureUserExists` from `helpers/users.ts`.
 4. `make setup SUITE=<name>`, then `make test_<name>`.
-5. Add `<name>` to the `e2e-amd64` matrix in `test_ops_image.yml` (`e2e-arm64` reuses it).
+5. Add `<name>` to a group of the `e2e-amd64` matrix in `test_ops_image.yml`
+   (`e2e-arm64` reuses it). The suites of a group share one runner and run one
+   after another (`bin/run-suites`).
